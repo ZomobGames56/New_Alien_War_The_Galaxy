@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/_AbdulWork/Scene/MainMenu.unity
+    guid: 7704a66f2ba59fb49ab4c0c217249424
+  - enabled: 1
+    path: Assets/_AbdulWork/Scene/Levels/NewAlienScene.unity
+    guid: c6bb471d3937a5c4dad39a82f6e27e3f
+  - enabled: 1
+    path: Assets/_AbdulWork/Scene/Levels/TestPlayerScene.unity
+    guid: b5259f2c1f5b8a0428fdeacbfed9d7b3
+  - enabled: 0
+    path: Assets/_AbdulWork/Scene/Levels/Level Scene 1.unity
+    guid: fa582bd1701729b458ceb74468331132
+  - enabled: 0
+    path: Assets/_AbdulWork/Scene/Levels/Level Scene 2.unity
+    guid: 88989a3d501f6d342a025041a7993438
+  - enabled: 0
+    path: Assets/_AbdulWork/Scene/Levels/Level Scene 3.unity
+    guid: 25b7412dbebea9647990dd0ef39e46c2
+  - enabled: 0
+    path: Assets/_AbdulWork/Scene/Levels/Level Scene 4.unity
+    guid: dfc1c4c7e54df684b96888af0973d749
+  - enabled: 0
+    path: Assets/_AbdulWork/Scene/Levels/Level Scene 5.unity
+    guid: 2ffa70b5dbfbdf34892b457fc5b52dae
+  - enabled: 0
+    path: Assets/_AbdulWork/Scene/Levels/Level Scene 6.unity
+    guid: 31d33031f867b4e40a029655ef281ea2
+  - enabled: 0
+    path: Assets/_AbdulWork/Scene/Levels/Level Scene 7.unity
+    guid: e0481148b53b5ce459b1582535331f81
+  - enabled: 0
+    path: Assets/_AbdulWork/Scene/Levels/Level Scene 8.unity
+    guid: 46140b769b6073e4a93c31896ad3f8f1
+  - enabled: 0
+    path: Assets/_AbdulWork/Scene/Levels/Level Scene 9.unity
+    guid: 5f488c2de70d8c54c85cf97a90da853d
+  - enabled: 0
+    path: Assets/_AbdulWork/Scene/Levels/Level Scene 10.unity
+    guid: 90cd97c9c35d3d44784978a9de419115
+  - enabled: 0
+    path: Assets/_AbdulWork/Scene/Levels/Level Scene 11.unity
+    guid: 994d68d8ac2c4ff4cb8e6414c567cc18
+  - enabled: 0
+    path: Assets/_AbdulWork/Scene/Levels/Level Scene 12.unity
+    guid: 761faab2a1bb4ca4dba0c0dd460c118b
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 9eb07e2d669e9c94e9d7d3c782a916f7,
+      type: 2}
