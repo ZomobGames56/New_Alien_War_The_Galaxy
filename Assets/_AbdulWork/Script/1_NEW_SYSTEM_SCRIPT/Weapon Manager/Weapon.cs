@@ -24,9 +24,10 @@ public class Weapon
     public int fireRate;
     public int mazgine;
     public bool isAvailable;
+    public bool isUnlocked;
     public int level;
 
-    public Weapon(int index, Sprite image, AudioClip audioClip, string name , WeaponCategory category , int damage , int range , int fireRate , int mazgine , bool isAvailable , int level)
+    public Weapon(int index, Sprite image, AudioClip audioClip, string name , WeaponCategory category , int damage , int range , int fireRate , int mazgine, bool isAvailable, bool isUnlocked, int level)
     {
         this.index = index;
         this.image = image;
@@ -38,6 +39,7 @@ public class Weapon
         this.fireRate = fireRate;
         this.mazgine = mazgine;
         this.isAvailable = isAvailable;
+        this.isUnlocked = isUnlocked;
         this.level = level;
 
     }

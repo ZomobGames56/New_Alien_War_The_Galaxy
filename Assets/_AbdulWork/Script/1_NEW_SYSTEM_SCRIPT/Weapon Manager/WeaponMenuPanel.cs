@@ -25,7 +25,8 @@ public class WeaponMenuPanel : MonoBehaviour
         for (int i = 0; i < loopIndex; i++)
         {
             weapon = weaponJSONHandler.GetWeaponClass(weaponIndexs[i]);
-            weaponMenuHandler[i].SetWeapon(weapon);
+            Debug.LogError("Set Weapon need to be fixed");
+            //weaponMenuHandler[i].SetWeapon(weapon);
         }
         category = _category;
     }

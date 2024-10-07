@@ -15,7 +15,7 @@ public class CurrencyScript : MonoBehaviour
     {
         if(PlayerPrefs.HasKey(CURRENCY_STRING))
         {
-            coin = 9000;
+            coin = 900;
             PlayerPrefs.SetInt(CURRENCY_STRING, coin);
             coin = PlayerPrefs.GetInt(CURRENCY_STRING);
             SaveCoin();

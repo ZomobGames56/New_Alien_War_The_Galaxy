@@ -100,6 +100,19 @@ public class WeaponJSONHandler : MonoBehaviour
         {
             if (weapon.index == index)
             {
+                weapon.isUnlocked = true;
+            }
+        }
+        SaveWeaponsToJson(weapons);
+        loadedWeapons = LoadInfoFromJson(weaponFilePath);
+    }
+    public void PurchaseWeapon(int index)
+    {
+        List<Weapon> weapons = loadedWeapons;
+        foreach (Weapon weapon in weapons)
+        {
+            if (weapon.index == index)
+            {
                 weapon.isAvailable = true;
             }
         }
