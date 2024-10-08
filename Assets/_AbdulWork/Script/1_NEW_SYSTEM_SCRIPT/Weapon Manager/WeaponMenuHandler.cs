@@ -4,9 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor.Animations.Rigging;
-using System.Linq;
-using System.Runtime.CompilerServices;
+using UnityEngine.EventSystems;
 public class WeaponMenuHandler : MonoBehaviour
 {
     /*// Old Script just for refference
@@ -82,10 +80,10 @@ public class WeaponMenuHandler : MonoBehaviour
         weaponJSONHandler.UnlockWeapon(weapon.index);
         weaponMenuPanel.ReloadUI();
     }*/
-    
-    
-    //Default Values
-    private float maxDamage = 300f, maxRange = 300f, maxFireRate = 50f, maxMazgine = 100f , maxLevel = 5 , basePrice = 50; 
+
+
+    //UI Button Logic
+    /*
     //new script
     private Slider[] sliders;
     private int  currentWeaponIndex , categoryIndex , price;
@@ -260,7 +258,7 @@ public class WeaponMenuHandler : MonoBehaviour
         mainWepaonImage.sprite = currentWeaponList[currentWeaponIndex].image;
         //int length = gunHolderPanel.GetComponentsInChildren<WeaponButtonScript>().Length;
         WeaponButtonScript[] script = gunHolderPanel.GetComponentsInChildren<WeaponButtonScript>();
-        for (int i =0; i < currentWeaponList.Count ; i++)
+        for (int i =0; i < currentWeaponList.Count ; i++)\
         {
             script[i].SetWeaponDetails(currentWeaponList[i].image, currentWeaponList[i].name , currentWeaponList[i].isAvailable);
         }
@@ -322,6 +320,220 @@ public class WeaponMenuHandler : MonoBehaviour
         else
         {
             print("Not enough money");
+        }
+    }*/
+    
+    //Default Values
+    private float maxDamage = 300f, maxRange = 300f, maxFireRate = 50f, maxMazgine = 100f , maxLevel = 5 , basePrice = 50;
+
+    [SerializeField] private Scrollbar scrollbar;
+    [SerializeField] private GameObject weaponButtonHolder;
+    [SerializeField] private GameObject weaponButtonPrefab;
+    [SerializeField] private CurrencyScript currencyScript;
+    [SerializeField] private WeaponJSONHandler weaponJSONScript;
+    [SerializeField] private List<CategoryButtonScript> categoriesButtons = new List<CategoryButtonScript>();
+    
+    
+    [Header("Main Wepaon parts")]
+    [SerializeField] private Image mainWeaponImage;
+    [SerializeField] private WeaponSpecScript rangeSpecScript;
+    [SerializeField] private WeaponSpecScript damageSpecScript;
+    [SerializeField] private WeaponSpecScript magzineSpecScript;
+    [SerializeField] private WeaponSpecScript fireRateSpecScript;
+    [SerializeField] private TextMeshProUGUI mainWeaponName , mainWeaponLevel;
+    
+    
+    [Header("Buttons")]
+    [SerializeField] private GameObject lockButton, buynowButton, upgradeButton, maxUpgradedButton;
+    
+    
+    [Header("currency")]
+    [SerializeField] private GameObject pricePanel;
+    [SerializeField] private TextMeshProUGUI priceText;
+    private int price;
+    private int weaponIndex;
+    private List<SingleWeaponButtonScript> weaponButtons = new List<SingleWeaponButtonScript>();
+    private List<Weapon> allWeapons = new List<Weapon>() , currentWeaponList = new List<Weapon>();
+    private void Start()
+    {
+        readAllWeapon();
+        for(int i = 0; i < allWeapons.Count; i++)
+        {
+            GameObject temp= Instantiate(weaponButtonPrefab, weaponButtonHolder.transform);
+            temp.transform.localScale = Vector3.one;
+            weaponButtons.Add(temp.GetComponent<SingleWeaponButtonScript>());
+            weaponButtons[weaponButtons.Count - 1].SetWeaponMenu(this);
+        }
+        ClearAllButtonsAnimations();
+        //weaponButtons[0].highlightButton();
+        categoriesButtons[0].highlightButton();
+        //switchCategory(Weapon.WeaponCategory.Pistol);
+        foreach(CategoryButtonScript categoryscript in categoriesButtons)
+        {
+            categoryscript.clearVerticalEvent += Categoryscript_clearVerticalEvent;
+        }
+        foreach(SingleWeaponButtonScript singleWeaponButton in weaponButtons)
+        {
+            singleWeaponButton.clearHorizontalEvent += SingleWeaponButton_clearHorizontalEvent;
+        }
+    }
+
+    private void SingleWeaponButton_clearHorizontalEvent(object sender, System.EventArgs e)
+    {
+        ClearWeaponButtons();
+    }
+
+    private void Categoryscript_clearVerticalEvent(object sender, System.EventArgs e)
+    {
+        ClearCategory();
+    }
+
+    public void switchCategory(Weapon.WeaponCategory _category)
+    {
+        currentWeaponList.Clear();
+        foreach(Weapon weapon in allWeapons)
+        {
+            if(weapon.category == _category )
+            {
+                currentWeaponList.Add(weapon);
+            }
+        }
+        ClearWeaponButtons();
+        weaponButtons[0].gameObject.SetActive(true);
+        weaponButtons[0].SetWeapon(currentWeaponList[0]);
+        weaponButtons[0].ButtonPressed();
+        RefreshButtons();
+    }
+    public void SetMainWeapon(Weapon weapon)
+    {
+        price = (int)((weapon.index - currentWeaponList[0].index + 1)* basePrice * weapon.level * (int)currentWeaponList[0].category);
+        weaponIndex = weapon.index;
+        mainWeaponName.text = weapon.name;
+        mainWeaponImage.sprite = weapon.image;
+        mainWeaponLevel.text = "Level " + weapon.level;
+        rangeSpecScript.SetSpecsValue("Range" , (weapon.range+"/"+maxRange), weapon.range/maxRange);
+        damageSpecScript.SetSpecsValue("Damage" , (weapon.damage + "/" + maxDamage), weapon.damage / maxDamage);
+        magzineSpecScript.SetSpecsValue("Magzine" , (weapon.mazgine + "/" + maxMazgine), weapon.mazgine / maxMazgine);
+        fireRateSpecScript.SetSpecsValue("Fire Rate" , (weapon.fireRate + "/" + maxFireRate), weapon.fireRate / maxFireRate);
+
+        if(!weapon.isUnlocked)
+        {
+            Switchbuttons(lockButton);
+            pricePanel.SetActive(false);
+            lockButton.GetComponentInChildren<Text>().text = "Unlock at level " + (weapon.index+1);
+        }
+        else if(!weapon.isAvailable)
+        {
+            pricePanel.SetActive(true);
+            Switchbuttons(buynowButton);
+            priceText.text = price.ToString();
+        }
+        else if(weapon.isAvailable)
+        {
+            if(weapon.level<maxLevel)
+            {
+                pricePanel.SetActive(true);
+                Switchbuttons(upgradeButton);
+                priceText.text = price.ToString();
+            }
+            else
+            {
+                pricePanel.SetActive(false);
+                Switchbuttons(maxUpgradedButton);
+            }
+        }
+    }
+    private void RefreshButtons()
+    {
+        foreach(SingleWeaponButtonScript weaponbutton in  weaponButtons)
+        {
+            weaponbutton.gameObject.SetActive(false);
+        }
+        for (int i = 0; i< currentWeaponList.Count; i++)
+        {
+            weaponButtons[i].gameObject.SetActive(true);
+            weaponButtons[i].SetWeapon(currentWeaponList[i]);
+        }
+        weaponButtonHolder.GetComponent<RectTransform>().sizeDelta = new Vector2(500 * currentWeaponList.Count, weaponButtonHolder.GetComponent<RectTransform>().sizeDelta.y);
+        scrollbar.value = 0;
+        if((weaponButtonHolder.GetComponent<RectTransform>().sizeDelta.x - 1600)<0)
+        {
+            weaponButtonHolder.GetComponent<RectTransform>().localPosition = new Vector2(0, weaponButtonHolder.GetComponent<RectTransform>().localPosition.y);
+        }
+        else
+        {
+            weaponButtonHolder.GetComponent<RectTransform>().localPosition = new Vector2((weaponButtonHolder.GetComponent<RectTransform>().sizeDelta.x - 1600) / 2 , weaponButtonHolder.GetComponent<RectTransform>().localPosition.y);
+        }
+    }
+    private void Switchbuttons(GameObject activeButton)
+    {
+        lockButton.SetActive(false);
+        buynowButton.SetActive(false);
+        upgradeButton.SetActive(false);
+        maxUpgradedButton.SetActive(false);
+
+        activeButton.SetActive(true);
+    }
+    public void UpgradeWeapon()
+    {
+        if (price <= currencyScript.GetCoin())
+        {
+            currencyScript.RemoveCoin(price);
+            weaponJSONScript.UpgradeWeapon(weaponIndex);
+            readAllWeapon();
+            Weapon.WeaponCategory category = currentWeaponList[0].category;
+            currentWeaponList.Clear();
+            foreach (Weapon weapon in allWeapons)
+            {
+                if (weapon.category == category)
+                {
+                    currentWeaponList.Add(weapon);
+                }
+            }
+            RefreshButtons();
+        }
+    }
+    public void PurchaseWeapon()
+    {
+        if (price <= currencyScript.GetCoin())
+        {
+            currencyScript.RemoveCoin(price);
+            weaponJSONScript.PurchaseWeapon(weaponIndex);
+            readAllWeapon();
+            Weapon.WeaponCategory category = currentWeaponList[0].category;
+            currentWeaponList.Clear();
+            foreach (Weapon weapon in allWeapons)
+            {
+                if (weapon.category == category)
+                {
+                    currentWeaponList.Add(weapon);
+                }
+            }
+            RefreshButtons();
+        }
+    }
+    private void readAllWeapon()
+    {
+        allWeapons = weaponJSONScript.GetAllWeaponList();
+    }
+    private void ClearAllButtonsAnimations()
+    {
+        ClearCategory();
+        ClearWeaponButtons();
+
+    }
+    private void ClearCategory()
+    {
+        foreach (CategoryButtonScript categoryButton in categoriesButtons)
+        {
+            categoryButton.clearAnimations();
+        }
+    }
+    private void ClearWeaponButtons()
+    {
+        foreach (SingleWeaponButtonScript weaponButton in weaponButtons)
+        {
+            weaponButton.clearAnimations();
         }
     }
 }
