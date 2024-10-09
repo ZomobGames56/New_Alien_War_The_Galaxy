@@ -350,13 +350,13 @@ public class WeaponMenuHandler : MonoBehaviour
     [Header("currency")]
     [SerializeField] private GameObject pricePanel;
     [SerializeField] private TextMeshProUGUI priceText;
-    private int price;
-    private int weaponIndex;
+    private int price , weaponIndex , currentCategory;
     private List<SingleWeaponButtonScript> weaponButtons = new List<SingleWeaponButtonScript>();
     private List<Weapon> allWeapons = new List<Weapon>() , currentWeaponList = new List<Weapon>();
-    private void Start()
+    public void Begins()
     {
         readAllWeapon();
+        print(allWeapons.Count);
         for(int i = 0; i < allWeapons.Count; i++)
         {
             GameObject temp= Instantiate(weaponButtonPrefab, weaponButtonHolder.transform);
@@ -366,7 +366,7 @@ public class WeaponMenuHandler : MonoBehaviour
         }
         ClearAllButtonsAnimations();
         //weaponButtons[0].highlightButton();
-        categoriesButtons[0].highlightButton();
+        categoriesButtons[currentCategory].highlightButton();
         //switchCategory(Weapon.WeaponCategory.Pistol);
         foreach(CategoryButtonScript categoryscript in categoriesButtons)
         {
@@ -390,6 +390,8 @@ public class WeaponMenuHandler : MonoBehaviour
 
     public void switchCategory(Weapon.WeaponCategory _category)
     {
+        //-1 is used to balance melee category
+        currentCategory = (int) _category -1 ;
         currentWeaponList.Clear();
         foreach(Weapon weapon in allWeapons)
         {
@@ -536,4 +538,40 @@ public class WeaponMenuHandler : MonoBehaviour
             weaponButton.clearAnimations();
         }
     }
+    private void OnDisable()
+    {
+        ClearAllButtonsAnimations();
+        foreach (SingleWeaponButtonScript script in weaponButtons)
+        {
+            Destroy(script.gameObject);
+        }
+        weaponButtons.Clear();
+    }
+/*    private void OnEnable()
+    {
+        readAllWeapon();
+        foreach(SingleWeaponButtonScript script in weaponButtons)
+        {
+            Destroy(script.gameObject);
+        }
+        for (int i = 0; i < allWeapons.Count; i++)
+        {
+            GameObject temp = Instantiate(weaponButtonPrefab, weaponButtonHolder.transform);
+            temp.transform.localScale = Vector3.one;
+            weaponButtons.Add(temp.GetComponent<SingleWeaponButtonScript>());
+            weaponButtons[weaponButtons.Count - 1].SetWeaponMenu(this);
+        }
+        ClearAllButtonsAnimations();
+        //weaponButtons[0].highlightButton();
+        categoriesButtons[0].highlightButton();
+        //switchCategory(Weapon.WeaponCategory.Pistol);
+        foreach (CategoryButtonScript categoryscript in categoriesButtons)
+        {
+            categoryscript.clearVerticalEvent += Categoryscript_clearVerticalEvent;
+        }
+        foreach (SingleWeaponButtonScript singleWeaponButton in weaponButtons)
+        {
+            singleWeaponButton.clearHorizontalEvent += SingleWeaponButton_clearHorizontalEvent;
+        }
+    }*/
 }

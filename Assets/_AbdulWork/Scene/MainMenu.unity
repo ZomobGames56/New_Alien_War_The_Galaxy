@@ -4021,6 +4021,7 @@ MonoBehaviour:
   weaponButtonHolder: {fileID: 110028955}
   weaponButtonPrefab: {fileID: 7808506198201860605, guid: cc91221b8e6bcc94984cd2f3b86fac3a,
     type: 3}
+  currencyScript: {fileID: 2142421234}
   weaponJSONScript: {fileID: 520031556}
   categoriesButtons:
   - {fileID: 1166207474}
