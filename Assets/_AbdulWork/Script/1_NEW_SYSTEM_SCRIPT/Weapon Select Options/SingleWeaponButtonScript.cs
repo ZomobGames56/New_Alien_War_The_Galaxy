@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class SingleWeaponButtonScript : MonoBehaviour , IPointerDownHandler
+public class SingleWeaponButtonScript : MonoBehaviour , IPointerClickHandler
 {
     public event EventHandler clearHorizontalEvent;
 
@@ -28,7 +28,7 @@ public class SingleWeaponButtonScript : MonoBehaviour , IPointerDownHandler
     {
         weaponMenuHandler = weaponMenu;
     }
-    public void OnPointerDown(PointerEventData ped)
+    public void OnPointerClick(PointerEventData ped)
     {
         if(!highLighted)
         {

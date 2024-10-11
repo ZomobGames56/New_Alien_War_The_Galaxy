@@ -32,7 +32,6 @@ public class PlanetSwitchScripts : MonoBehaviour
             selectButton.interactable = false;
             lockImage[1].SetActive(true);
         }
-        Debug.Log(planetNo + " planet No");
         LockPrevious();
         LockForward();
     }
