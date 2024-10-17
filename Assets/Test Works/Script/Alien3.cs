@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class Alien3 : AlienClass
 {
+    private bool normal = false;
     protected override void Undetected()
     {
         //No movemet since player is in Idle
     }
     protected override void Detected()
     {
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Alerted"))
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Alerted") && !normal)
         {
             if (Mathf.Abs((player.transform.position.x - this.transform.position.x)) > 2)
             {
@@ -33,6 +34,7 @@ public class Alien3 : AlienClass
             }
             else
             {
+                normal = true;
                 if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Detected"))
                 {
                     animator.Play("Detected");

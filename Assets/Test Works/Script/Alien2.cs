@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Alien2 : AlienClass
 {
+
     protected override void Undetected()
     {
         transform.position += transform.forward * speed/3 * Time.deltaTime;

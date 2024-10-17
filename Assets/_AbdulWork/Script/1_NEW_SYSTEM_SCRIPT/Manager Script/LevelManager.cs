@@ -30,6 +30,7 @@ public class LevelManager : MonoBehaviour
         terrains[3] = (Instantiate(terrainObject, terrainObject.transform.position + new Vector3(scaleWidth, 0, scaleLength), Quaternion.identity));
         terrains[3].transform.localScale = new Vector3(-terrains[3].transform.localScale.x , terrains[3].transform.localScale.y , -terrains[3].transform.localScale.z); 
         currentTerrain = terrains[0];
+        //player = playerMovementScript.gameObject.transform;
     }
     private void OnEnable()
     {
@@ -47,6 +48,7 @@ public class LevelManager : MonoBehaviour
     }
     private void PlayerMovementScript_gameOverEvent(object sender, System.EventArgs e)
     {
+        print("Player died");
         Time.timeScale = 0f;
         Switch(gameOverUI);
     }

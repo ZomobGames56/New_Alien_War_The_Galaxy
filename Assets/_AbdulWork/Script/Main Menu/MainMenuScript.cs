@@ -1,9 +1,16 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 public class MainMenuScript : MonoBehaviour
 {
+
     public static bool gameOpen = false;
-    [SerializeField] private GameObject landingPage , mainMenu , levelMenu, gunSelectMenu , gunUpgradeSelectMenu, gunUpgradeMenu , missionMenu , targetMenu , quitMenu;
+    [SerializeField] private GameObject transitionPanel;
+    [SerializeField] private Animator transitionAnimator;
+    [SerializeField] private GameObject landingPage , mainMenu , levelMenu, gunSelectMenu , DailyMissionPanel , SettingPanel, gunUpgradeMenu , missionMenu , targetMenu , quitMenu;
 
     private float timer;
     private void Awake()
@@ -11,11 +18,11 @@ public class MainMenuScript : MonoBehaviour
         Time.timeScale = 1f;
         if(gameOpen)
         {
-            ActiveCurrentScreen(mainMenu);
+            SwitchScreen(mainMenu);
         }
         else
         {
-            ActiveCurrentScreen(landingPage);
+            SwitchScreen(landingPage);
         }
         timer = 0;
     }
@@ -35,9 +42,16 @@ public class MainMenuScript : MonoBehaviour
     {
         SceneManager.LoadScene(1);
     }
-    public void ActiveCurrentScreen(GameObject gameObject)
+    public void ActiveCurrentScreen(GameObject obj)
     {
-        gunUpgradeSelectMenu.SetActive(false);
+        transitionPanel.SetActive(true);
+        transitionAnimator.Play("In");
+        StartCoroutine(AnimationFunction(SwitchScreen, "In" , obj));
+    }
+    private void SwitchScreen(GameObject obj)
+    {
+        DailyMissionPanel.SetActive(false);
+        SettingPanel.SetActive(false);
         landingPage.SetActive(false);
         mainMenu.SetActive(false);
         levelMenu.SetActive(false);
@@ -46,7 +60,23 @@ public class MainMenuScript : MonoBehaviour
         missionMenu.SetActive(false);
         targetMenu.SetActive(false);
         quitMenu.SetActive(false);
-        gameObject.SetActive(true);
+        
+        obj.SetActive(true);
+        transitionAnimator.Play("Out");
+        StartCoroutine(AnimationFunction(DisablePanel, "Out", transitionPanel));
+    }
+    private void DisablePanel(GameObject obj)
+    {
+        obj.SetActive(false);
+    }
+    IEnumerator AnimationFunction(Action<GameObject> action, string animName , GameObject obj)
+    {
+        do
+        {
+            yield return null;
+        } while (transitionAnimator.GetCurrentAnimatorStateInfo(0).IsName(animName));
+        action(obj);
+        StopCoroutine("AnimationFunction");
     }
     public void Quit()
     {

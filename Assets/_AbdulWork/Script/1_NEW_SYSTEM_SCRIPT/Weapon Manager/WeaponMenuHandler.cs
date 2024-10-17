@@ -356,7 +356,6 @@ public class WeaponMenuHandler : MonoBehaviour
     public void Begins()
     {
         readAllWeapon();
-        print(allWeapons.Count);
         for(int i = 0; i < allWeapons.Count; i++)
         {
             GameObject temp= Instantiate(weaponButtonPrefab, weaponButtonHolder.transform);
@@ -547,31 +546,4 @@ public class WeaponMenuHandler : MonoBehaviour
         }
         weaponButtons.Clear();
     }
-/*    private void OnEnable()
-    {
-        readAllWeapon();
-        foreach(SingleWeaponButtonScript script in weaponButtons)
-        {
-            Destroy(script.gameObject);
-        }
-        for (int i = 0; i < allWeapons.Count; i++)
-        {
-            GameObject temp = Instantiate(weaponButtonPrefab, weaponButtonHolder.transform);
-            temp.transform.localScale = Vector3.one;
-            weaponButtons.Add(temp.GetComponent<SingleWeaponButtonScript>());
-            weaponButtons[weaponButtons.Count - 1].SetWeaponMenu(this);
-        }
-        ClearAllButtonsAnimations();
-        //weaponButtons[0].highlightButton();
-        categoriesButtons[0].highlightButton();
-        //switchCategory(Weapon.WeaponCategory.Pistol);
-        foreach (CategoryButtonScript categoryscript in categoriesButtons)
-        {
-            categoryscript.clearVerticalEvent += Categoryscript_clearVerticalEvent;
-        }
-        foreach (SingleWeaponButtonScript singleWeaponButton in weaponButtons)
-        {
-            singleWeaponButton.clearHorizontalEvent += SingleWeaponButton_clearHorizontalEvent;
-        }
-    }*/
 }

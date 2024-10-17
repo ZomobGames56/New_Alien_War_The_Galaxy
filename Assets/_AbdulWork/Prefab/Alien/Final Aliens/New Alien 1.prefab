@@ -572,7 +572,17 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2880029383513808592}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f45b1735035d53f4081d587949da8df1,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8998025466034580872}
   m_SourcePrefab: {fileID: 100100000, guid: f45b1735035d53f4081d587949da8df1, type: 3}
+--- !u!137 &2096117438840742590 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7006208654179254833, guid: f45b1735035d53f4081d587949da8df1,
+    type: 3}
+  m_PrefabInstance: {fileID: 8948065401762603151}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8137023500679962078 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f45b1735035d53f4081d587949da8df1,
@@ -639,7 +649,7 @@ Animator:
   m_GameObject: {fileID: 8137023500679962078}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 25b173457ff74394ba5f57658b0869f9, type: 3}
-  m_Controller: {fileID: 9100000, guid: 50ae63be81a2eab4a856131034decb6f, type: 2}
+  m_Controller: {fileID: 9100000, guid: dc4e4efc4e1867941a4780d9dda998af, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -663,6 +673,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
+  normalspeed: 3
   animator: {fileID: 9098285277971878892}
   initalHealth: 50
   HealthMultiplier: 1
@@ -670,6 +681,28 @@ MonoBehaviour:
   bulletHitEffect: {fileID: 784262570615927482}
   meleeHitEffect: {fileID: 784262570615927482}
   knifeHitEffect: {fileID: 784262570615927482}
+  mat: {fileID: 2096117438840742590}
+--- !u!135 &8998025466034580872
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8137023500679962078}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 1
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.2
+  m_Center: {x: 0, y: 0.05, z: 0}
 --- !u!4 &8910182126359971684 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f45b1735035d53f4081d587949da8df1,

@@ -19,7 +19,7 @@ public class LevelUIManager : MonoBehaviour
     {
         missionManager = GetComponent<MissionManager>();
         levelManager = GetComponent<LevelManager>();
-        Debug.LogWarning("Inplement Level Detail properly");
+        Debug.LogWarning("Implement Level Detail properly");
         //Temp Code remove and add proper funtionality
         currentPosition = player.position.z;
         kills = 0;

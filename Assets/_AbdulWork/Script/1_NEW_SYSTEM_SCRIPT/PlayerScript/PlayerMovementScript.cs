@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerMovementScirpt : MonoBehaviour
 {
     public event EventHandler gameOverEvent;
+    public event EventHandler playerDyingAnimation;
     public event Action<PlayerState> playerStateChanged;
     public enum PlayerState
     {
@@ -82,18 +83,10 @@ public class PlayerMovementScirpt : MonoBehaviour
         else
             Horizontal = d_joystick.Horizontal;
         rb.MovePosition(transform.position + transform.forward * forwardSpeed * Time.deltaTime + transform.right * sideSpeed * Time.deltaTime * Horizontal);
-        transform.GetChild(0).GetChild(0).rotation = Quaternion.Euler(0, 0, Mathf.Lerp(transform.GetChild(0).GetChild(0).rotation.z
+        Camera.main.gameObject.transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(Camera.main.gameObject.transform.rotation.z
     , Mathf.Clamp(Horizontal, -0.8f, 0.8f) * camtilt
     , Time.fixedDeltaTime * 1f));
     }
-    //private void Grabbed()
-    //{
-    //    deadTime += Time.deltaTime;
-    //    if(deadTime>maxDeadTime)
-    //    {
-    //        gameOverEvent?.Invoke(this , EventArgs.Empty);
-    //    }
-    //}
     public void HitAlien()
     {
         alienEnemy.GetComponent<AlienClass>().KnifeHit();
@@ -102,6 +95,8 @@ public class PlayerMovementScirpt : MonoBehaviour
     {
         alienEnemy  = enemy;
         this.transform.LookAt(alienEnemy.transform.position);
+        alienEnemy.transform.LookAt(transform.position);
+        alienEnemy.transform.position = transform.position + transform.forward * 1.2f + transform.right * (-.2f);
         state = PlayerState.Grabbed;
         playerStateChanged?.Invoke(state);
         FireButton.SetActive(false);
@@ -111,6 +106,7 @@ public class PlayerMovementScirpt : MonoBehaviour
         playerWeaponScript.SetKnife();
         meleeButton.GetComponent<Button>().onClick.AddListener(KnifeAttack);
         alienEnemy.GetComponent<AlienClass>().PlayerKilled += PlayerMovementScirpt_PlayerKilled;
+        alienEnemy.GetComponent<AlienClass>().PlayerDying += PlayerMovementScirpt_PlayerDying;
     }
     private void KnifeAttack()
     {
@@ -122,7 +118,14 @@ public class PlayerMovementScirpt : MonoBehaviour
     {
         gameOverEvent?.Invoke(this, EventArgs.Empty);
     }
-
+    private void PlayerMovementScirpt_PlayerDying(object sender, EventArgs e)
+    {
+        PlayerDying();
+    }
+    private void PlayerDying()
+    {
+        playerDyingAnimation?.Invoke(this, EventArgs.Empty);
+    }
     public void GrabbedToFree()
     {
         this.transform.rotation = Quaternion.identity;
@@ -133,6 +136,7 @@ public class PlayerMovementScirpt : MonoBehaviour
         meleeButton.SetActive(false);
         StartCoroutine(ExecuteAfterTime(.1f));
         alienEnemy.GetComponent<AlienClass>().PlayerKilled -= PlayerMovementScirpt_PlayerKilled;
+        alienEnemy.GetComponent<AlienClass>().PlayerDying -= PlayerMovementScirpt_PlayerDying;
     }
     IEnumerator ExecuteAfterTime(float time)
     {
@@ -142,19 +146,6 @@ public class PlayerMovementScirpt : MonoBehaviour
         grabbedTriggerObject.SetActive(true);
         movementTriggerObject.SetActive(true);
     }
-    //private void Freed()
-    //{
-    //    freeTime += Time.deltaTime;
-    //    if (freeTime > freeTimeMax)
-    //    {
-    //        state = PlayerState.Moving;
-    //        playerStateChanged?.Invoke(state);
-    //        FireButton.SetActive(true);
-    //        meleeButton.SetActive(false);
-    //        grabbedTriggerObject.SetActive(true);
-    //        movementTriggerObject.SetActive(true);
-    //    }
-    //}
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Object")

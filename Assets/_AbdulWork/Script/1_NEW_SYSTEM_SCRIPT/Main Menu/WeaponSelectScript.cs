@@ -223,4 +223,9 @@ public class WeaponSelectScript : MonoBehaviour
             mainWeaponPanel.SelectWeapon(null);
         }
     }
+    public void GameStart()
+    {
+        PlayerPrefs.SetInt("Weapon1Index", weapon1Index);
+        PlayerPrefs.SetInt("Weapon2Index", weapon2Index);
+    }
 }

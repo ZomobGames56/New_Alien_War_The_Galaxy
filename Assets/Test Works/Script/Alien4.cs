@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Alien4 : AlienClass
 {
+    private bool normal = false;
     protected override void Undetected()
     {
         transform.position += transform.forward * speed/3 * Time.deltaTime;
@@ -12,7 +13,7 @@ public class Alien4 : AlienClass
     {
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Alerted"))
         {
-            if (Mathf.Abs((player.transform.position.x - this.transform.position.x)) > 2)
+            if (Mathf.Abs((player.transform.position.x - this.transform.position.x)) > 2 && !normal)
             {
                 if (player.transform.position.x > transform.position.x)
                 {
@@ -33,6 +34,7 @@ public class Alien4 : AlienClass
             }
             else
             {
+                normal = true;
                 if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Detected"))
                 {
                     animator.Play("Detected");

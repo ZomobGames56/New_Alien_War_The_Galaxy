@@ -6,12 +6,14 @@ using System.Collections;
 public abstract class AlienClass : MonoBehaviour
 {
     public event EventHandler PlayerKilled;
+    public event EventHandler PlayerDying;
     protected enum AlienState
     {
         Undetected,
         DectectedPlayer,
         Grabbed,
         Killed,
+        Stop
     }
     protected int health;
     protected Rigidbody rb;
@@ -19,14 +21,19 @@ public abstract class AlienClass : MonoBehaviour
     protected GameObject player;
     protected string AnimationName;
     protected new CapsuleCollider collider;
-    [SerializeField] protected float speed = 5;
+    [SerializeField] protected float speed = 5 , normalspeed = 5;
     [SerializeField] protected Animator animator;
     protected PlayerMovementScirpt playerMovementScript;
     [SerializeField] protected int initalHealth , HealthMultiplier;
     [SerializeField] protected NewAlienSpawnerScript newAlienSpawnerScript;
     [SerializeField] protected VisualEffect bulletHitEffect, meleeHitEffect, knifeHitEffect;
+
+
+    //Test Code 
+    public Renderer mat;
     private void Start()
     {
+        speed = normalspeed;
         animator.Play("Undetected");
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<CapsuleCollider>();
@@ -39,6 +46,7 @@ public abstract class AlienClass : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<CapsuleCollider>();
         Reset();
+        state = AlienState.DectectedPlayer;
     }
     protected void Update()
     {
@@ -62,11 +70,25 @@ public abstract class AlienClass : MonoBehaviour
                 {
                     break;
                 }
+            case AlienState.Stop:
+                {
+                    break;
+                }
         }
     }
-
+    public void ReduceSpeedAlien()
+    {
+        animator.Play("Idle");
+        speed = 0;
+    }
+    public void StartAlien()
+    {
+        animator.Play("Detected");
+        speed = normalspeed;
+    }
     protected void Reset()
     {
+        speed = normalspeed;
         rb.useGravity = true;
         collider.enabled = true;
         state = AlienState.Undetected;
@@ -83,8 +105,15 @@ public abstract class AlienClass : MonoBehaviour
     {
         AnimationName = "Bite";
         state = AlienState.Grabbed;
+        animator.Play(AnimationName);
+        PlayerDying?.Invoke(this , EventArgs.Empty);
+        StartCoroutine(AnimationFunction(Killed, AnimationName));
+    }
+    private void Killed()
+    {
+        print("Kill Player");
         PlayerKilled?.Invoke(this, EventArgs.Empty);
-        StartCoroutine(AnimationFunction(BackToList, AnimationName));
+        BackToList();
     }
     public void KnifeHit()
     {
@@ -153,6 +182,23 @@ public abstract class AlienClass : MonoBehaviour
             AnimationName = "Alerted";
             animator.Play(AnimationName);
             state = AlienState.DectectedPlayer;
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Enemy")
+        {
+            if(transform.position.z < other.transform.position.z)
+            {
+                other.GetComponent<AlienClass>().ReduceSpeedAlien();
+            }
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Enemy")
+        {
+                other.GetComponent<AlienClass>().StartAlien();
         }
     }
     IEnumerator AnimationFunction(Action action , string animName)

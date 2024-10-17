@@ -7,22 +7,23 @@ public class PlayerWeaponScript : MonoBehaviour
 {
     public event EventHandler updateUI;
     public event EventHandler shootEvent;
-    public event EventHandler fireButtonReleased;
-    public event EventHandler playerKilled;
     public event EventHandler knifeAttack;
     public event EventHandler FreedPlayer;
+    public event EventHandler playerKilled;
+    public event EventHandler fireButtonReleased;
 
-    private GameObject meleeWeapon;
     private bool gunDrop;
-    private int mainWeaponIndex, backWeaponIndex, meleeIndex, knifeIndex;
-    private Weapon mainWeaponClass = null, backWeaponClass = null;
+    private GameObject meleeWeapon;
     private List<int> availableIndexs = new List<int>();
+    private Weapon mainWeaponClass = null, backWeaponClass = null;
+    private int mainWeaponIndex, backWeaponIndex, meleeIndex, knifeIndex;
     [SerializeField] private Animator animator;
     [SerializeField] private Button switchButton;
     [SerializeField] private WeaponJSONHandler weaponJSONHandler;
-    [SerializeField] private List<GameObject> weapons = new List<GameObject>();
     [SerializeField] private ButtonPressedScript shootButtonScript;
     [SerializeField] private PlayerTargetScript playerTargetScript;
+    [SerializeField] private PlayerMovementScirpt playerMovementScript;
+    [SerializeField] private List<GameObject> weapons = new List<GameObject>();
     //No Change
     private void Awake()
     {
@@ -67,8 +68,15 @@ public class PlayerWeaponScript : MonoBehaviour
             PickWeapon(backWeaponIndex);
         }
         switchButton.onClick.AddListener(SwitchButtonPressed);
+        playerMovementScript.playerDyingAnimation += PlayerMovementScript_playerDyingAnimation;
         UpdateUI();
     }
+
+    private void PlayerMovementScript_playerDyingAnimation(object sender, EventArgs e)
+    {
+        animator.Play("Die");
+    }
+
     //No Change
     private void SwitchButtonPressed()
     {
@@ -120,22 +128,6 @@ public class PlayerWeaponScript : MonoBehaviour
     {
         updateUI?.Invoke(this, EventArgs.Empty);
     }
-/*    public GameObject GetMainWeapon()
-    {
-        if (mainWeaponIndex >= 0 && mainWeaponIndex < weapons.Count)
-        {
-            if (mainWeaponClass == null)
-            {
-                mainWeaponClass = weaponJSONHandler.GetWeaponClass(mainWeaponIndex);
-                weapons[mainWeaponIndex].GetComponent<NewWeaponScript>().SetWeapon(mainWeaponClass);
-                NewWeaponScript mainWeaponScript = weapons[mainWeaponIndex].GetComponent<NewWeaponScript>();
-                mainWeaponScript.DropWeaponEvent += MainWeaponScript_DropWeaponEvent;
-                mainWeaponScript.updateUI += MainWeaponScript_updateUI;
-            }
-            return weapons[mainWeaponIndex];
-        }
-        return null;
-    }*/
     //Recheck all good for now
     private void PickWeapon(int index)
     {
