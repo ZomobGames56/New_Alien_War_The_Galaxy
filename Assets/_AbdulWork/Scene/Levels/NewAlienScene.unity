@@ -1999,7 +1999,7 @@ MonoBehaviour:
   - {fileID: 8137023500679962078, guid: 393192a9ec9c7d945bf110af115e8a4a, type: 3}
   - {fileID: 8137023500679962078, guid: 25be6c6d7784333468568061d945db85, type: 3}
   - {fileID: 8137023500679962078, guid: 21fc01eb5f31fb64b835d2a4dfb0ed71, type: 3}
-  alienSpawnStrength: 20
+  alienSpawnStrength: 10
 --- !u!1 &1653150039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2540,6 +2540,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 184974794178017375, guid: 4a082adb4563ef748955ea10a2fc28cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 237303608510692341, guid: 4a082adb4563ef748955ea10a2fc28cd,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -2800,6 +2805,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2483138124462794901, guid: 4a082adb4563ef748955ea10a2fc28cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2565022186431267740, guid: 4a082adb4563ef748955ea10a2fc28cd,
         type: 3}
       propertyPath: offset.x
@@ -2970,6 +2980,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3330226705277487249, guid: 4a082adb4563ef748955ea10a2fc28cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3501888640451540496, guid: 4a082adb4563ef748955ea10a2fc28cd,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -3053,7 +3068,7 @@ PrefabInstance:
     - target: {fileID: 4340982529954557709, guid: 4a082adb4563ef748955ea10a2fc28cd,
         type: 3}
       propertyPath: m_Center.z
-      value: -0.78
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4401368287987774826, guid: 4a082adb4563ef748955ea10a2fc28cd,
         type: 3}
@@ -3258,6 +3273,11 @@ PrefabInstance:
     - target: {fileID: 6483182790674306227, guid: 4a082adb4563ef748955ea10a2fc28cd,
         type: 3}
       propertyPath: m_UpdateWhenOffscreen
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6982497120888861327, guid: 4a082adb4563ef748955ea10a2fc28cd,
+        type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7002179361252639488, guid: 4a082adb4563ef748955ea10a2fc28cd,

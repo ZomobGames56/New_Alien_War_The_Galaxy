@@ -185,7 +185,7 @@ public abstract class NewAlienClass : MonoBehaviour
         {
             if(transform.position.z < other.transform.position.z)
             {
-                other.GetComponent<AlienClass>().ReduceSpeedAlien();
+               
             }
         }
     }
@@ -193,7 +193,6 @@ public abstract class NewAlienClass : MonoBehaviour
     {
         if (other.tag == "Enemy")
         {
-                other.GetComponent<AlienClass>().StartAlien();
         }
     }
     IEnumerator AnimationFunction(Action action , string animName)

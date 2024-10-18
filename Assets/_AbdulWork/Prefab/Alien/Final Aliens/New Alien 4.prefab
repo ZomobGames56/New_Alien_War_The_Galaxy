@@ -577,12 +577,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 5647046177608208130}
   m_SourcePrefab: {fileID: 100100000, guid: f45b1735035d53f4081d587949da8df1, type: 3}
---- !u!137 &2096117438840742590 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 7006208654179254833, guid: f45b1735035d53f4081d587949da8df1,
-    type: 3}
-  m_PrefabInstance: {fileID: 8948065401762603151}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8137023500679962078 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f45b1735035d53f4081d587949da8df1,
@@ -681,7 +675,6 @@ MonoBehaviour:
   bulletHitEffect: {fileID: 784262570615927482}
   meleeHitEffect: {fileID: 784262570615927482}
   knifeHitEffect: {fileID: 784262570615927482}
-  mat: {fileID: 2096117438840742590}
 --- !u!135 &5647046177608208130
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -701,7 +694,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.2
+  m_Radius: 0.1
   m_Center: {x: 0, y: 0.05, z: 0}
 --- !u!4 &8910182126359971684 stripped
 Transform:

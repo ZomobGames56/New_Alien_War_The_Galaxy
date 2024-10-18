@@ -29,12 +29,6 @@ public class WeaponSelectButton : MonoBehaviour , IPointerClickHandler
                 anim.SetTrigger("Highlighted");
                 weaponSelectScript.SelectButtonPressed();
             }
-            else
-            {
-                anim.SetTrigger("Highlighted");
-                weaponSelectScript.RemoveLastWeapon();
-                weaponSelectScript.SelectButtonPressed();
-            }
         }else if(!highlighted) 
         {
             selected = false;
